@@ -2,9 +2,9 @@
 
 # 🛠️ Gestão de Ordens de Serviço
 
-### Sistema de manutenção industrial em **VisuAlg / Portugol**
+### Sistema de manutenção industrial em **Portugol**
 
-![Linguagem](https://img.shields.io/badge/linguagem-VisuAlg%20%2F%20Portugol-blue?style=for-the-badge)
+![Linguagem](https://img.shields.io/badge/linguagem-Portugol-blue?style=for-the-badge)
 ![Curso](https://img.shields.io/badge/SENAI-Desenvolvimento%20de%20Sistemas-red?style=for-the-badge)
 ![UC](https://img.shields.io/badge/UC-Lógica%20de%20Programação-success?style=for-the-badge)
 ![Status](https://img.shields.io/badge/status-concluído-brightgreen?style=for-the-badge)
@@ -44,8 +44,8 @@ Projeto desenvolvido no **Curso Técnico em Desenvolvimento de Sistemas (SENAI)*
 | 🎓 Curso | Técnico em Desenvolvimento de Sistemas |
 | 📚 UC | Lógica de Programação |
 | ⏱️ Carga horária | 4h |
-| 👥 Dinâmica | Em grupo (3  estudantes) |
-| 📦 Entrega | Arquivo `.alg` + relatório curto + demonstração presencial |
+| 👥 Dinâmica | Em grupo (3 estudantes) |
+| 📦 Entrega | Arquivo do algoritmo em Portugol (`.por`) + relatório curto + demonstração presencial |
 
 ---
 
@@ -59,70 +59,73 @@ Os dados precisam ficar **legíveis, padronizados e fáceis de manter**, pois di
 
 ## ✨ Funcionalidades
 
-O sistema funciona por **menu de opções**:
+O sistema funciona por **menu de opções**, que se repete até o usuário escolher sair:
 
 ```text
-==========================================
-      GESTÃO DE ORDENS DE SERVIÇO
-==========================================
-  1 - Cadastrar OS
-  2 - Listar OS
-  3 - Buscar OS por código
-  4 - Ordenar OS
-  5 - Atualizar status
-  0 - Sair
-==========================================
-Escolha uma opção:
+===== SISTEMA DE OS =====
+1 - Cadastrar OS
+2 - Listar OS
+3 - Buscar OS
+4 - Ordenar OS
+5 - Atualizar status
+6 - Sair
+Escolha:
 ```
 
 | # | Funcionalidade | O que faz |
 |---|---|---|
-| 1 | ➕ **Cadastrar** | Registra uma nova OS com validação dos dados |
+| 1 | ➕ **Cadastrar** | Registra uma nova OS com validação dos dados. O código é gerado automaticamente (101, 102, 103...) |
 | 2 | 📋 **Listar** | Exibe todas as OS cadastradas |
 | 3 | 🔎 **Buscar** | Encontra uma OS pelo código |
-| 4 | 🔢 **Ordenar** | Organiza por código ou por prioridade |
+| 4 | 🔢 **Ordenar** | Pergunta o critério e organiza por código ou por prioridade |
 | 5 | 🔄 **Atualizar status** | Altera o status de uma OS existente |
-| 0 | 🚪 **Sair** | Encerra o programa |
+| 6 | 🚪 **Sair** | Encerra o programa |
 
 ---
 
 ## 🗂️ Estrutura de dados
 
-As OS são armazenadas em um **vetor de registros**. Cada registro possui:
+As OS são armazenadas em **cinco vetores paralelos**, com capacidade de **100 OS** (constante `LIMITE`). A mesma posição em todos os vetores pertence à mesma OS: a posição `0` guarda todos os dados da primeira OS, a posição `1` os da segunda, e assim por diante. A variável `total` guarda quantas OS já foram cadastradas.
 
-| Campo | Tipo | Regra |
+| Vetor | Tipo | Regra |
 |---|---|---|
-| `codigo` | Inteiro | Identificador da OS |
-| `descricao` | Texto | Descrição do serviço |
-| `prioridade` | Inteiro | Aceita apenas **1 a 3** |
-| `tempo` | Inteiro | Tempo estimado, em **minutos** |
-| `status` | Texto | `Aberta`, `Em andamento` ou `Concluída` |
+| `vCodigo` | Inteiro | Identificador da OS, gerado automaticamente (`101 + total`) |
+| `vDescricao` | Texto | Descrição do serviço (não pode ficar vazia) |
+| `vPrioridade` | Inteiro | Aceita apenas **1 a 3** |
+| `vTempo` | Inteiro | Tempo estimado, em **minutos** (deve ser maior que 0) |
+| `vStatus` | Inteiro | `1` = Aberta, `2` = Em andamento, `3` = Concluída |
+
+Toda OS nova começa com o status **Aberta**. A função `nomeStatus` converte o número do status no texto que aparece na tela.
 
 **Prioridades**
 
 | Valor | Significado |
 |:---:|---|
-| 🔴 1 | Alta |
+| 🟢 1 | Baixa |
 | 🟡 2 | Média |
-| 🟢 3 | Baixa |
+| 🔴 3 | Alta |
 
 ---
 
 ## 🧩 Modularização
 
-O código é dividido em **procedimentos e funções**, cada um com uma única tarefa:
+O código é dividido em **funções**, cada uma com uma única tarefa:
 
 | Módulo | Responsabilidade |
 |---|---|
-| `exibirMenu` | Mostra o menu principal |
+| `inicio` | Mostra o menu principal e chama a função da opção escolhida |
 | `cadastrarOS` | Lê, valida e guarda uma nova OS |
 | `listarOS` | Mostra todas as OS cadastradas |
-| `buscarPorCodigo` | Busca sequencial por código |
-| `ordenarPorCodigo` | Ordena o vetor pelo código |
-| `ordenarPorPrioridade` | Ordena o vetor pela prioridade |
+| `buscarOS` | Pede o código e mostra a OS encontrada |
+| `buscarPosicao` | Busca sequencial: devolve a posição do código no vetor, ou `-1` se não existir |
+| `mostrarOS` | Mostra na tela os dados de uma OS |
+| `ordenarOS` | Pergunta o critério de ordenação e chama a função certa |
+| `ordenarPorCodigo` | Ordena pelo código (Bubble Sort) |
+| `ordenarPorPrioridade` | Ordena pela prioridade (Bubble Sort) |
+| `trocar` | Troca duas OS vizinhas nos **cinco vetores** de uma vez, para os dados não se misturarem |
 | `atualizarStatus` | Muda o status de uma OS |
-
-> ✏️ *Ajuste os nomes da tabela para ficarem iguais aos do seu arquivo `.alg`.*
+| `nomeStatus` | Converte o número do status em texto |
+| `nomePrioridade` | Converte o número da prioridade em texto |
 
 ---
 
@@ -138,7 +141,7 @@ flowchart TD
     D -- 3 --> G[Buscar por código]
     D -- 4 --> H[Ordenar OS]
     D -- 5 --> I[Atualizar status]
-    D -- 0 --> J([Fim])
+    D -- 6 --> J([Fim])
     D -- Outra --> K[Mostrar opção inválida]
     E --> B
     F --> B
@@ -158,53 +161,61 @@ flowchart TD
 
 ## ▶️ Como executar
 
-1. Baixe ou instale o **[VisuAlg](https://visualg3.com.br/)**.
+1. Baixe e instale o **Portugol Studio**.
 2. Clone este repositório:
    ```bash
    git clone https://github.com/kidgrind3v/AVA_PRESENCIAL_2.git
    ```
-3. Abra o arquivo `gestao_os.alg` no VisuAlg.
-4. Pressione **F9** para executar.
+3. Abra o arquivo `sistema_os.por` no Portugol Studio.
+4. Clique em **Executar** (botão de play, ou tecla **F5**).
 5. Use o menu para testar as opções.
-
-
 
 ---
 
 ## 🧪 Casos de teste
 
-> ✏️ *Confira cada caso rodando o seu programa e ajuste as saídas se necessário. Adicione prints na pasta `docs/`.*
+> ✏️ *Adicione prints dos testes na pasta `docs/`.*
 
 ### ✅ Teste 1 – Cadastro e listagem
 
 | Entrada | Saída esperada |
 |---|---|
-| Opção `1` → código `101`, descrição `Troca de rolamento`, prioridade `2`, tempo `90` | OS cadastrada com sucesso |
+| Opção `1` → descrição `Troca de rolamento`, prioridade `2`, tempo `90` | `OS 101 cadastrada com sucesso!` |
 | Opção `2` | Lista mostra a OS `101` com status **Aberta** |
 
-### ✅ Teste 2 – Validação de prioridade
+### ✅ Teste 2 – Validação de dados
 
 | Entrada | Saída esperada |
 |---|---|
-| Opção `1` → prioridade `5` | Mensagem de prioridade inválida e nova solicitação do dado (aceita só 1 a 3) |
+| Opção `1` → prioridade `5` | `Valor inválido! Digite 1 (baixa), 2 (média) ou 3 (alta):` e nova solicitação do dado |
+| Opção `1` → tempo `0` | `Valor inválido! Digite novamente:` e nova solicitação do dado |
+| Opção `1` → descrição em branco | `Você não escreveu nada. Digite novamente:` |
 
 ### ✅ Teste 3 – Busca e atualização de status
 
 | Entrada | Saída esperada |
 |---|---|
 | Opção `3` → código `101` | Exibe os dados da OS `101` |
-| Opção `5` → código `101` → novo status `Concluída` | Status atualizado com sucesso |
-| Opção `3` → código `999` | Mensagem de OS não encontrada |
+| Opção `5` → código `101` → novo status `3` | `OS 101 atualizada para Concluída.` |
+| Opção `3` → código `999` | `OS 999 não encontrada.` |
+
+### ✅ Teste 4 – Ordenação
+
+| Entrada | Saída esperada |
+|---|---|
+| Cadastrar 3 OS com prioridades `3`, `1` e `2`, depois opção `4` → critério `2` | `Ordenado por prioridade!` |
+| Opção `2` | OS listadas da prioridade `1` para a `3`, cada uma com a sua descrição e tempo (os dados não se misturam) |
+| Opção `4` com menos de 2 OS cadastradas | `É preciso ter pelo menos 2 OS para ordenar.` |
 
 ---
 
 ## 🧼 Padrões adotados
 
 - **Indentação** consistente em todos os blocos
-- **Comentários técnicos** explicando as partes importantes
-- **Nomenclatura** clara, em `camelCase`, com nomes que dizem o que a variável ou módulo faz
-- **Constantes** para valores fixos, como o limite máximo do vetor
-- **Estruturas de decisão** (`se / senao`, `escolha / caso`) e **repetição** (`para`, `enquanto`, `repita`) usadas em cada situação adequada
+- **Comentários** separando cada parte do programa (cadastrar, listar, buscar, ordenar, atualizar e menu)
+- **Nomenclatura** clara, em `camelCase`, com nomes que dizem o que a variável ou função faz (os vetores começam com `v`)
+- **Constante** `LIMITE` para o tamanho máximo dos vetores
+- **Estruturas de decisão** (`se / senao`, `escolha / caso`) e **repetição** (`para`, `enquanto`, `faca / enquanto`) usadas em cada situação adequada
 - **Expressões** aritméticas, relacionais e lógicas aplicadas nas validações
 
 ---
@@ -237,8 +248,8 @@ flowchart TD
 ## 📁 Estrutura do repositório
 
 ```text
-📦 gestao-ordens-servico
- ┣ 📜 gestao_os.alg        # Algoritmo em VisuAlg/Portugol
+📦 AVA_PRESENCIAL_2
+ ┣ 📜 sistema_os.por       # Algoritmo em Portugol
  ┣ 📁 docs
  ┃ ┣ 📄 relatorio.pdf      # Relatório curto (pseudocódigo/fluxograma + testes)
  ┃ ┗ 🖼️ prints/            # Evidências dos casos de teste
