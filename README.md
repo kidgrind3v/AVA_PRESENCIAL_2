@@ -167,7 +167,7 @@ flowchart TD
 4. Pressione **F9** para executar.
 5. Use o menu para testar as opções.
 
-> ✏️ *Troque `SEU-USUARIO`, `NOME-DO-REPOSITORIO` e `gestao_os.alg` pelos nomes reais.*
+
 
 ---
 
