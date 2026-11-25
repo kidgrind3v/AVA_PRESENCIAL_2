@@ -161,7 +161,7 @@ flowchart TD
 1. Baixe ou instale o **[VisuAlg](https://visualg3.com.br/)**.
 2. Clone este repositório:
    ```bash
-   git clone https://github.com/SEU-USUARIO/NOME-DO-REPOSITORIO.git
+   git clone https://github.com/kidgrind3v/AVA_PRESENCIAL_2.git
    ```
 3. Abra o arquivo `gestao_os.alg` no VisuAlg.
 4. Pressione **F9** para executar.
